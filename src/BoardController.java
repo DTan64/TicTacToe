@@ -1,10 +1,10 @@
-// maybe and interface?
-
+import kotlin.Pair;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class BoardController {
+public class BoardController implements BoardControllerInterface {
 
     private final Board boardInstance;
 
@@ -12,8 +12,8 @@ public class BoardController {
         boardInstance = Board.getInstance();
     }
 
-    public void makeMove(JButton button) {
-        boardInstance.makeMove(button);
+    public void makeMove(Pair<Integer,Integer> pos, String move) {
+        boardInstance.makeMove(pos, move);
     }
 
     public ArrayList<JButton> getButtonList() {
@@ -24,7 +24,9 @@ public class BoardController {
         return boardInstance.getMove();
     }
 
-
+    public HashMap<Pair<Integer, Integer>, String> getMoveMap() {
+        return boardInstance.getMoveMap();
+    }
 
 
 }

@@ -1,16 +1,22 @@
+import kotlin.Pair;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 public class Spot extends JButton {
 
+    private static String move;
+    private final Pair<Integer, Integer> position;
 
-    public Spot() {
+
+    public Spot(int col, int row) {
 
         super();
         this.addActionListener(this::onClick);
+        position = new Pair<>(col, row);
+        move = "x";
 
     }
 
@@ -19,7 +25,7 @@ public class Spot extends JButton {
         BoardController bc = new BoardController();
 
         JButton tmp = (JButton) e.getSource();
-        ImageIcon xIcon = new ImageIcon(GUI.class.getResource("images/" + bc.getCurrentMove().toLowerCase() + ".png"));
+        ImageIcon xIcon = new ImageIcon(GUI.class.getResource("images/" + move.toLowerCase() + ".png"));
 
         BufferedImage resized = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resized.createGraphics();
@@ -33,11 +39,13 @@ public class Spot extends JButton {
         tmp.setDisabledIcon(xIcon);
         tmp.setEnabled(false);
 
+        bc.makeMove(position, move);
 
-
-        bc.makeMove(tmp);
-
-
+        if (move.equals("x")) {
+            move = "o";
+        } else {
+            move = "x";
+        }
 
 
 
