@@ -11,8 +11,6 @@ public class CPU {
     private final String move;
 
 
-
-
     public CPU(int row, int col, String move) {
 
 
@@ -20,13 +18,13 @@ public class CPU {
         this.col = col;
         this.move = move;
 
-
-
-
-
-
-
     }
+
+
+
+
+
+
 
 
 

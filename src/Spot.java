@@ -22,8 +22,6 @@ public class Spot extends JButton {
 
     private void onClick(ActionEvent e) {
 
-        BoardController bc = new BoardController();
-
         JButton tmp = (JButton) e.getSource();
         ImageIcon xIcon = new ImageIcon(GUI.class.getResource("images/" + move.toLowerCase() + ".png"));
 
@@ -39,13 +37,12 @@ public class Spot extends JButton {
         tmp.setDisabledIcon(xIcon);
         tmp.setEnabled(false);
 
-        bc.makeMove(position, move);
-
         if (move.equals("x")) {
             move = "o";
         } else {
             move = "x";
         }
+
 
 
 

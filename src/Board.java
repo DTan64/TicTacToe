@@ -1,8 +1,11 @@
 import kotlin.Pair;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.locks.Lock;
 
 // implement interface??
 // should this be singleton?
@@ -11,82 +14,179 @@ import java.util.HashMap;
 // issue is I need to know which JButton to call onClick...
 // I can't recreate buttons so maybe this does need to be singleton?
 // Could I store the ArrayList on the GUI class? I'm only keeping track of position and button now.
-// That would decouple things more. 
+// That would decouple things more.
 
 public class Board {
 
-    private static final HashMap<Pair<Integer, Integer>, JButton> buttonMap = new HashMap<>(); // position map to position
-    private static HashMap<Pair<Integer, Integer>, String> moveMap = new HashMap<>();
-    private static ArrayList<JButton> buttonList = new ArrayList<>();
-    private static Board board = new Board();
-
+    private final HashMap<Pair<Integer, Integer>, String> moveMap;
     private static final String xMove = "X";
     private static final String oMove = "O";
-    private static String currentMove = xMove;
-    private static final int N = 3;
+    private String currentMove = xMove;
+    private static final int N = GUI.N;
+    private Integer utility;
+    private static final Object lock = new Object();
 
     private Board() {
 
         int row;
         int col;
-
+        moveMap = new HashMap<>();
 
         for (int i = 0; i < N*N; i++) {
             row = i / N;
             col = i % N;
-            JButton buttonToInsert = new Spot(col, row);
 
-            buttonMap.put(new Pair<>(col, row), buttonToInsert); // x y coords from top left. positive y is down
             moveMap.put(new Pair<>(col, row), "");
-            buttonList.add(buttonToInsert);
+
         }
 
 
     }
 
-
-    public static Board getInstance() {
-        return board;
+    private Board(Board initialState) {
+        this.moveMap = initialState.getMoveMap();
     }
 
 
-    public void makeMove(Pair<Integer, Integer> pos, String move) {
+    /* X = 1; O = -1; 0 for now win
+    */
+
+    public static void main(String[] args) {
+        Board b = new Board();
+
+
+        for (int i = 0; i < GUI.N; i++) {
+            b.computeUtility(new Pair<>(i,i), b);
+
+        }
+
+
+
+        System.err.println(b.getUtility());
+
+    }
+
+
+    public Board computeUtility(Pair<Integer, Integer> move, Board state) {
+
+        Board newState = new Board(state);
+
+
+        newState.makeMove(move);
+        HashMap<Pair<Integer, Integer>, String> moves = newState.getMoveMap();
+        ArrayList<Pair<Integer, Integer>> xMoveList = new ArrayList<>();
+        ArrayList<Pair<Integer, Integer>> oMoveList = new ArrayList<>();
+
+        moves.forEach((k,v) -> {
+            System.err.println(k + v);
+
+
+
+            // O(N) to get all x moves
+            if (v.equals(xMove)) {
+                xMoveList.add(k);
+            } else {
+                oMoveList.add(k);
+            }
+        });
+
+
+        // nlogn to sort
+
+        xMoveList.sort((c1, c2) -> c2.getSecond().compareTo(c1.getSecond()));
+        oMoveList.sort((c1, c2) -> c2.getSecond().compareTo(c1.getSecond()));
+
+
+        for (Pair<Integer, Integer> p : xMoveList) {
+            state.makeMove(new Pair<>(p.getFirst(), p.getSecond()));
+            state.printMap();
+        }
+
+
+        return state;
+
+        // O(N) to search column
+//        int currentColum = -1;
+//        int currentRow = -1;
+//        int colSequence;
+
+
+        // second needs to remain constant
+
+
+
+
+
+
+
+
+
+//            for (Pair<Integer, Integer> pos : xMoveList) {
+//                currentRow = pos.getSecond();
+//                currentColum = pos.getFirst();
+//                if (pos)
+//
+//                System.out.println(pos);
+//
+//
+//
+//            }
+//
+
+
+
+
+
+
+    }
+
+    public Integer getUtility() { return this.utility;}
+
+
+
+
+    public void makeMove(Pair<Integer, Integer> move) {
         System.out.println("making move");
 
-        if (move.equals(xMove)) {
-            moveMap.put(pos, move);
-        } else {
-            moveMap.put(pos, move);
+//        if (move.equals(xMove)) {
+//            moveMap.put(pos, move);
+//        } else {
+//            moveMap.put(pos, move);
+//        }
+//
+//        if (move.equals(xMove)) {
+//            currentMove = oMove;
+//        } else {
+//            currentMove = xMove;
+//        }
+
+
+        synchronized (lock) {
+            moveMap.put(move, currentMove);
+            currentMove = currentMove.equals(xMove) ? oMove : xMove;
+
         }
 
-        if (move.equals(xMove)) {
-            currentMove = oMove;
-        } else {
-            currentMove = xMove;
-        }
 
-        printMap();
+
+
+
+        //printMap();
 
 
     }
 
     public void printMap() {
-        moveMap.forEach((pos, m) -> System.out.println(pos + ": " + m));
-        System.out.println("\n");
-    }
+        synchronized (lock) {
+            this.moveMap.forEach((pos, m) -> System.out.println(pos + ": " + m));
+            System.out.println("\n");
+        }
 
-    public ArrayList<JButton> getButtonList() {
-        return buttonList;
     }
 
     public String getMove() {
         return currentMove;
     }
-
-//
-//    public Pair getPos(JButton button) {
-//        return buttonMap.get(button);
-//    }
 
     public HashMap<Pair<Integer,Integer>, String> getMoveMap() { return moveMap; }
 

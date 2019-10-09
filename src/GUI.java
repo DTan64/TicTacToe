@@ -1,8 +1,11 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import kotlin.Pair;
+
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GUI {
 
@@ -11,9 +14,12 @@ public class GUI {
     private JLabel statusLabel;
     private JPanel controlPanel;
     private JPanel boardPanel;
-    private BoardController bc = new BoardController();
+    public static final Integer N = 3;
+    private static final ArrayList<JButton> buttonList = new ArrayList<>();
+    private static final HashMap<Pair<Integer, Integer>, JButton> buttonMap = new HashMap<>(); // position map to button
 
-    public GUI() {
+
+    private GUI() {
         prepare();
     }
 
@@ -59,12 +65,24 @@ public class GUI {
         layout.setVgap(10);
         boardPanel.setLayout(layout);
 
-        ArrayList<JButton> buttonList = bc.getButtonList();
+        int row;
+        int col;
 
 
-        for(int i = 0; i < buttonList.size(); i++) {
-            boardPanel.add(buttonList.get(i));
+        for (int i = 0; i < N*N; i++) {
+            row = i / N;
+            col = i % N;
+            JButton buttonToInsert = new Spot(col, row);
+            buttonList.add(buttonToInsert);
+            buttonMap.put(new Pair<>(col, row), buttonToInsert); // x y coords from top left. positive y is down
         }
+
+        for (JButton jButton : buttonList) {
+            boardPanel.add(jButton);
+        }
+
+
+
 
         controlPanel.add(boardPanel);
 
@@ -72,6 +90,10 @@ public class GUI {
         mainFrame.setVisible(true);
 
 
+    }
+
+    public static JButton getButton(int col, int row) {
+        return buttonMap.get(new Pair<>(col, row));
     }
 
 
