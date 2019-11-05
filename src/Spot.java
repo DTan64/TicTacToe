@@ -1,4 +1,4 @@
-import kotlin.Pair;
+import javafx.util.Pair;
 
 import javax.swing.*;
 import java.awt.*;

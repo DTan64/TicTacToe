@@ -1,4 +1,4 @@
-import kotlin.Pair;
+import javafx.util.Pair;
 
 import javax.swing.*;
 import java.lang.reflect.Array;
@@ -93,14 +93,14 @@ public class Board {
 
         // nlogn to sort
 
-        xMoveList.sort((c1, c2) -> c2.getSecond().compareTo(c1.getSecond()));
-        oMoveList.sort((c1, c2) -> c2.getSecond().compareTo(c1.getSecond()));
-
-
-        for (Pair<Integer, Integer> p : xMoveList) {
-            state.makeMove(new Pair<>(p.getFirst(), p.getSecond()));
-            state.printMap();
-        }
+//        xMoveList.sort((c1, c2) -> c2.getSecond().compareTo(c1.getSecond()));
+//        oMoveList.sort((c1, c2) -> c2.getSecond().compareTo(c1.getSecond()));
+//
+//
+//        for (Pair<Integer, Integer> p : xMoveList) {
+//            state.makeMove(new Pair<>(p.getFirst(), p.getSecond()));
+//            state.printMap();
+//        }
 
 
         return state;

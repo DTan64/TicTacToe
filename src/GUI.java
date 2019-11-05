@@ -1,4 +1,4 @@
-import kotlin.Pair;
+import javafx.util.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +14,7 @@ public class GUI {
     private JLabel statusLabel;
     private JPanel controlPanel;
     private JPanel boardPanel;
+
     public static final Integer N = 3;
     private static final ArrayList<JButton> buttonList = new ArrayList<>();
     private static final HashMap<Pair<Integer, Integer>, JButton> buttonMap = new HashMap<>(); // position map to button
@@ -31,17 +32,17 @@ public class GUI {
     private void prepare() {
         mainFrame = new JFrame("TicTacToe");
         //mainFrame.setSize(500,500);
-        mainFrame.setLayout(new GridLayout(3,1));
+        mainFrame.setLayout(new GridLayout(3, 1));
 
         mainFrame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent windowEvent){
+            public void windowClosing(WindowEvent windowEvent) {
                 System.exit(0);
             }
         });
 
         headerLabel = new JLabel("", JLabel.CENTER);
-        statusLabel = new JLabel("",JLabel.CENTER);
-        statusLabel.setSize(350,100);
+        statusLabel = new JLabel("", JLabel.CENTER);
+        statusLabel.setSize(350, 100);
 
         controlPanel = new JPanel();
         controlPanel.setLayout(new FlowLayout());
@@ -52,14 +53,12 @@ public class GUI {
         mainFrame.setVisible(true);
 
 
-
-
     }
 
     private void startGame() {
 
         boardPanel = new JPanel();
-        boardPanel.setSize(300,300);
+        boardPanel.setSize(300, 300);
         GridLayout layout = new GridLayout(0, 3);
         layout.setHgap(10);
         layout.setVgap(10);
@@ -69,7 +68,7 @@ public class GUI {
         int col;
 
 
-        for (int i = 0; i < N*N; i++) {
+        for (int i = 0; i < N * N; i++) {
             row = i / N;
             col = i % N;
             JButton buttonToInsert = new Spot(col, row);
@@ -82,11 +81,9 @@ public class GUI {
         }
 
 
-
-
         controlPanel.add(boardPanel);
 
-        mainFrame.setSize(400,400);
+        mainFrame.setSize(400, 400);
         mainFrame.setVisible(true);
 
 
@@ -95,8 +92,6 @@ public class GUI {
     public static JButton getButton(int col, int row) {
         return buttonMap.get(new Pair<>(col, row));
     }
-
-
 
 
 }
