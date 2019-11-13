@@ -1,11 +1,7 @@
 import javafx.util.Pair;
 
-import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.locks.Lock;
 
 // implement interface??
 // should this be singleton?
@@ -13,7 +9,7 @@ import java.util.concurrent.locks.Lock;
 // maybe keep Board constant and create new boardState to pass into cpu?
 // issue is I need to know which JButton to call onClick...
 // I can't recreate buttons so maybe this does need to be singleton?
-// Could I store the ArrayList on the GUI class? I'm only keeping track of position and button now.
+// Could I store the ArrayList on the UI.GUI class? I'm only keeping track of position and button now.
 // That would decouple things more.
 
 public class Board {
@@ -22,7 +18,7 @@ public class Board {
     private static final String xMove = "X";
     private static final String oMove = "O";
     private String currentMove = xMove;
-    private static final int N = GUI.N;
+    private static final int N = 3;
     private Integer utility;
     private static final Object lock = new Object();
 
@@ -55,7 +51,7 @@ public class Board {
         Board b = new Board();
 
 
-        for (int i = 0; i < GUI.N; i++) {
+        for (int i = 0; i < 3; i++) {
             b.computeUtility(new Pair<>(i,i), b);
 
         }
