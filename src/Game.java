@@ -1,25 +1,54 @@
 import kotlin.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
-public class State {
-
-    private int row;
-    private int col;
-    private int utility;
-    private String toMove = "X";
-    private static HashMap<Pair<Integer, Integer>, String> board; // should this be Board object?
-    private ArrayList<Pair<Integer,Integer>> moves;
+// This class actually plays the game
 
 
-    State(int row, int col) {
+public class Game {
+
+
+    private Board state;
+
+
+    public Game(Board initialState) {
+        state = initialState;
+
+    }
+
+
+    public Board getState() {return state;}
+
+
+
+
+    // Hypothetical result of move in state
+    public Board result(Pair<Integer, Integer> move, Board state) {
+
+//        Board newState = new Board(state);
+//
+//        newState.makeMove(move);
+//
+//        return newState;
+        return state;
+
+
+
 
 
 
     }
 
 
+    public static void main(String[] args) {
+        //Game newGame = new Game(new Board());
+
+
+
+
+
+
+
+    }
 
 
 
